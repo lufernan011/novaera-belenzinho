@@ -1,0 +1,19 @@
+[
+  { "day": 1, "mode": "presencial", "time": "20:00", "activity": "Passes" },
+  { "day": 1, "mode": "presencial", "time": "20:30", "activity": "Palestra" },
+  { "day": 1, "mode": "presencial", "time": "21:00", "activity": "Reunião Mediúnica Pública" },
+  { "day": 2, "mode": "online", "time": "20:30", "activity": "Palestra e Vibração" },
+  { "day": 3, "mode": "presencial", "time": "14:00", "activity": "Passes" },
+  { "day": 3, "mode": "presencial", "time": "14:30", "activity": "Palestra" },
+  { "day": 3, "mode": "presencial", "time": "15:00", "activity": "Reunião Mediúnica Pública" },
+  { "day": 3, "mode": "presencial", "time": "20:00", "activity": "Passes" },
+  { "day": 3, "mode": "presencial", "time": "20:30", "activity": "Palestra" },
+  { "day": 3, "mode": "presencial", "time": "21:00", "activity": "Reunião Mediúnica Pública" },
+  { "day": 4, "mode": "online", "time": "21:00", "activity": "Palestra e Vibração" },
+  { "day": 5, "mode": "presencial", "time": "20:00", "activity": "Passes" },
+  { "day": 5, "mode": "presencial", "time": "20:30", "activity": "Palestra" },
+  { "day": 5, "mode": "presencial", "time": "21:00", "activity": "Reunião Mediúnica Pública" },
+  { "day": 6, "mode": "presencial", "time": "14:00", "activity": "Passes" },
+  { "day": 6, "mode": "presencial", "time": "14:30", "activity": "Palestra" },
+  { "day": 6, "mode": "presencial", "time": "15:00", "activity": "Reunião Mediúnica Pública" }
+]
