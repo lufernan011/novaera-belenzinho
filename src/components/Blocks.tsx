@@ -65,11 +65,14 @@ export default function Blocks({ blocks }: { blocks: Block[] }) {
             </h3>
           );
         }
-        return (
-          <p key={i} className="text-[17px] leading-relaxed text-ink-800">
-            {group.text}
-          </p>
-        );
+        if (group.type === "paragraph") {
+          return (
+            <p key={i} className="text-[17px] leading-relaxed text-ink-800">
+              {group.text}
+            </p>
+          );
+        }
+        return null;
       })}
     </div>
   );
