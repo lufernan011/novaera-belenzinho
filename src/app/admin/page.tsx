@@ -43,7 +43,7 @@ export default async function AdminHome() {
     <main className="mx-auto max-w-3xl px-5 py-10">
       <div className="mb-8 flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl text-twilight-700">
+          <h1 className="font-display text-3xl text-petrol-700">
             {firstName && firstName !== "Recuperação"
               ? `Olá, ${firstName}! O que você quer fazer?`
               : "Olá! O que você quer fazer?"}
@@ -83,7 +83,7 @@ export default async function AdminHome() {
             <span className="text-3xl" aria-hidden>
               {a.icon}
             </span>
-            <span className="text-[17px] font-medium leading-snug text-twilight-700">
+            <span className="text-[17px] font-medium leading-snug text-petrol-700">
               {a.label}
             </span>
           </Link>
@@ -98,7 +98,7 @@ export default async function AdminHome() {
           <ul className="space-y-1.5 text-[15px] text-ink-600">
             {recent.map((r) => (
               <li key={r.id}>
-                <span className="text-twilight-700">{r.label || r.entity}</span>
+                <span className="text-petrol-700">{r.label || r.entity}</span>
                 {r.author && <> · {r.author}</>} · {timeAgo(r.createdAt)}
               </li>
             ))}

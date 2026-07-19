@@ -35,7 +35,7 @@ export default function SettingsForm({
       <div className="space-y-5">
         {fields.map((f) => (
           <div key={f.key}>
-            <label htmlFor={f.key} className="mb-1.5 block text-[16px] font-medium text-twilight-700">
+            <label htmlFor={f.key} className="mb-1.5 block text-[16px] font-medium text-petrol-700">
               {f.label}
             </label>
             {f.multiline ? (

@@ -41,7 +41,7 @@ export default function AccessEditor({
       />
 
       <section className="rounded-2xl border border-sand-300 bg-white p-5">
-        <h2 className="mb-3 font-display text-xl text-twilight-700">
+        <h2 className="mb-3 font-display text-xl text-petrol-700">
           Cadastrar nova pessoa
         </h2>
         <div className="flex flex-wrap gap-3">
@@ -134,7 +134,7 @@ function UserCard({
   return (
     <li className="rounded-2xl border border-sand-300 bg-white p-4">
       <div className="flex flex-wrap items-center gap-3">
-        <span className="font-display text-lg text-twilight-700">
+        <span className="font-display text-lg text-petrol-700">
           {user.name}
           {isSelf && <span className="ml-2 text-[13px] text-coral-700">(você)</span>}
         </span>

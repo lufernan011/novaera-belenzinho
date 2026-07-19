@@ -24,7 +24,7 @@ export default function Header({ overlay = false }: { overlay?: boolean }) {
       className={
         overlay
           ? "absolute inset-x-0 top-0 z-20"
-          : "relative z-20 bg-twilight-700"
+          : "relative z-20 bg-petrol-700"
       }
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
@@ -83,7 +83,7 @@ export default function Header({ overlay = false }: { overlay?: boolean }) {
 
       {open && (
         <nav
-          className="border-t border-white/15 bg-twilight-800 px-5 py-4 lg:hidden"
+          className="border-t border-white/15 bg-petrol-800 px-5 py-4 lg:hidden"
           aria-label="Principal (celular)"
         >
           <ul className="flex flex-col gap-1">

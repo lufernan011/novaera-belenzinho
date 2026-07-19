@@ -31,7 +31,7 @@ export default function WorkersMural({ workers }: { workers: Worker[] }) {
   const chip = (selected: boolean) =>
     `rounded-full px-4 py-2 text-[15px] transition ${
       selected
-        ? "bg-twilight-700 text-white"
+        ? "bg-petrol-700 text-white"
         : "border border-sand-300 bg-white text-ink-600 hover:border-coral-500"
     }`;
 
@@ -59,7 +59,7 @@ export default function WorkersMural({ workers }: { workers: Worker[] }) {
             <div className="flex justify-center">
               <PersonAvatar name={w.name} photo={w.photo} size={72} />
             </div>
-            <p className="mt-2 text-[15px] font-medium leading-snug text-twilight-700">
+            <p className="mt-2 text-[15px] font-medium leading-snug text-petrol-700">
               {w.name}
             </p>
             {w.role && (

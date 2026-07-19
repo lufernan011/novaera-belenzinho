@@ -22,7 +22,7 @@ export default async function Page() {
           <span aria-hidden>←</span> Voltar ao painel
         </Link>
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="font-display text-3xl text-twilight-700">Publicações</h1>
+          <h1 className="font-display text-3xl text-petrol-700">Publicações</h1>
           <Link
             href="/admin/publicacoes/nova/"
             className="rounded-full bg-amber-500 px-6 py-3 text-[16px] font-medium text-ink-900 hover:bg-amber-300"
@@ -49,10 +49,10 @@ export default async function Page() {
                   className="h-16 w-16 shrink-0 rounded-xl object-cover"
                 />
               ) : (
-                <div className="h-16 w-16 shrink-0 rounded-xl bg-twilight-700" />
+                <div className="h-16 w-16 shrink-0 rounded-xl bg-petrol-700" />
               )}
               <span className="min-w-0">
-                <span className="block truncate font-display text-lg text-twilight-700">
+                <span className="block truncate font-display text-lg text-petrol-700">
                   {post.title}
                 </span>
                 <span className="block text-[14px] text-ink-500">

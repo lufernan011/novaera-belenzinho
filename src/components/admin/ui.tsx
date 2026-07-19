@@ -22,7 +22,7 @@ export function EditorHeader({
       >
         <span aria-hidden>←</span> Voltar ao painel
       </Link>
-      <h1 className="font-display text-3xl text-twilight-700">{title}</h1>
+      <h1 className="font-display text-3xl text-petrol-700">{title}</h1>
       {hint && <p className="mt-2 max-w-2xl text-[16px] text-ink-600">{hint}</p>}
     </header>
   );

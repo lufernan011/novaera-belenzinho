@@ -30,7 +30,7 @@ export default async function Page({
   if (!post || !post.published) notFound();
 
   return (
-    <PageShell title={post.title}>
+    <PageShell title={post.title} image={post.cover || undefined}>
       <p className="-mt-4 mb-8 text-sm tracking-wider text-coral-700 uppercase">
         {post.category || "Publicação"} · {formatDate(post.date)}
       </p>

@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  /* Paleta pôr do sol — aprovada no mockup v2 */
-  --color-twilight-900: #1e2740;
-  --color-twilight-800: #26314f;
-  --color-twilight-700: #2e3a63;
-  --color-twilight-600: #39426b;
-  --color-twilight-100: #d7dcec;
+  /* Paleta pôr do sol + verde-petróleo do logo (#3C5E64) */
+  --color-petrol-900: #14252a;
+  --color-petrol-800: #1e363c;
+  --color-petrol-700: #2b4a51;
+  --color-petrol-600: #3c5e64;
+  --color-petrol-100: #d3e2e4;
   --color-coral-700: #8a4a28;
   --color-coral-600: #a84b42;
   --color-coral-500: #c05a50;

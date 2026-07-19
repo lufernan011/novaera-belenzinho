@@ -28,7 +28,7 @@ export default async function Page() {
         >
           <span aria-hidden>←</span> Voltar ao painel
         </Link>
-        <h1 className="font-display text-3xl text-twilight-700">Textos das páginas</h1>
+        <h1 className="font-display text-3xl text-petrol-700">Textos das páginas</h1>
         <p className="mt-2 text-[16px] text-ink-600">
           Escolha a página que você quer atualizar. Horários, contato, diretoria
           e doações têm botões próprios no painel.
@@ -42,7 +42,7 @@ export default async function Page() {
               href={`/admin/paginas/${p.slug}/`}
               className="flex items-center justify-between rounded-2xl border border-sand-300 bg-white p-5 transition hover:border-coral-500"
             >
-              <span className="font-display text-xl text-twilight-700">
+              <span className="font-display text-xl text-petrol-700">
                 {EDITABLE[p.slug]}
               </span>
               <span className="text-[15px] text-coral-700">editar →</span>

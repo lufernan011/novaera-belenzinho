@@ -46,7 +46,7 @@ export default function PostEditor({
 
       <div className="space-y-5 rounded-2xl border border-sand-300 bg-white p-5">
         <div>
-          <label htmlFor="title" className="mb-1.5 block text-[16px] font-medium text-twilight-700">
+          <label htmlFor="title" className="mb-1.5 block text-[16px] font-medium text-petrol-700">
             Título
           </label>
           <input
@@ -60,7 +60,7 @@ export default function PostEditor({
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="date" className="mb-1.5 block text-[16px] font-medium text-twilight-700">
+            <label htmlFor="date" className="mb-1.5 block text-[16px] font-medium text-petrol-700">
               Data
             </label>
             <input
@@ -72,7 +72,7 @@ export default function PostEditor({
             />
           </div>
           <div>
-            <label htmlFor="category" className="mb-1.5 block text-[16px] font-medium text-twilight-700">
+            <label htmlFor="category" className="mb-1.5 block text-[16px] font-medium text-petrol-700">
               Tipo
             </label>
             <select
@@ -91,14 +91,14 @@ export default function PostEditor({
           </div>
         </div>
         <div>
-          <span className="mb-1.5 block text-[16px] font-medium text-twilight-700">
+          <span className="mb-1.5 block text-[16px] font-medium text-petrol-700">
             Foto de capa
           </span>
           <PhotoInput value={post.cover} onChange={(url) => set({ cover: url })} label="Capa" />
         </div>
       </div>
 
-      <h2 className="mb-3 mt-8 font-display text-2xl text-twilight-700">Conteúdo</h2>
+      <h2 className="mb-3 mt-8 font-display text-2xl text-petrol-700">Conteúdo</h2>
       <BlocksEditor blocks={post.blocks} onChange={(blocks) => set({ blocks })} />
 
       {id && (

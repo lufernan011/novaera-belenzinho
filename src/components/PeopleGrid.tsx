@@ -37,7 +37,7 @@ export default function PeopleGrid({
             </div>
           )}
           <div className="px-4 py-4">
-            <p className="font-display text-lg leading-snug text-twilight-700">{p.name}</p>
+            <p className="font-display text-lg leading-snug text-petrol-700">{p.name}</p>
             {p.role && <p className="mt-1 text-[15px] text-ink-600">{p.role}</p>}
           </div>
         </li>

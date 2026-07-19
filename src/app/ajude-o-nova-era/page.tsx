@@ -33,18 +33,19 @@ export default async function Page() {
   return (
     <PageShell
       title="Ajude o Nova Era"
+      image="/images/comunidade.jpg"
       intro="Toda ajuda se transforma em amparo às famílias assistidas e na manutenção da casa. Gratidão!"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         {WAYS.map((w) => (
           <section key={w.title} className="rounded-2xl border border-sand-200 bg-white p-6">
-            <h2 className="mb-2 font-display text-xl text-twilight-700">{w.title}</h2>
+            <h2 className="mb-2 font-display text-xl text-petrol-700">{w.title}</h2>
             <p className="text-[16px] leading-relaxed text-ink-600">{w.text}</p>
           </section>
         ))}
 
         <section className="rounded-2xl border-2 border-amber-500 bg-sand-100 p-6">
-          <h2 className="mb-2 font-display text-xl text-twilight-700">
+          <h2 className="mb-2 font-display text-xl text-petrol-700">
             Doação em dinheiro
           </h2>
           {s.donation_pix ? (

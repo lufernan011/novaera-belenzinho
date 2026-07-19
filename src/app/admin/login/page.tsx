@@ -25,7 +25,7 @@ export default async function LoginPage() {
           height={64}
           className="mx-auto h-16 w-16 rounded-full border-2 border-sand-200 object-cover object-left"
         />
-        <h1 className="mt-4 font-display text-2xl text-twilight-700">
+        <h1 className="mt-4 font-display text-2xl text-petrol-700">
           Área da diretoria
         </h1>
         <p className="mt-1 text-[16px] text-ink-600">

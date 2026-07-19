@@ -534,44 +534,8 @@
     "title": "Trabalhos Realizados",
     "blocks": [
       {
-        "type": "subheading",
+        "type": "heading",
         "text": "Assistência Social"
-      },
-      {
-        "type": "subheading",
-        "text": "Infância e Juventude"
-      },
-      {
-        "type": "subheading",
-        "text": "Estudos da Doutrina"
-      },
-      {
-        "type": "subheading",
-        "text": "Palestras"
-      },
-      {
-        "type": "subheading",
-        "text": "Reuniões Mediúnicas"
-      },
-      {
-        "type": "subheading",
-        "text": "Psicografia"
-      },
-      {
-        "type": "subheading",
-        "text": "Fluidoterapia – Passes"
-      },
-      {
-        "type": "subheading",
-        "text": "Passes Magnéticos"
-      },
-      {
-        "type": "subheading",
-        "text": "Grupo de Costura"
-      },
-      {
-        "type": "subheading",
-        "text": "Bazar Permanente"
       },
       {
         "type": "paragraph",
@@ -591,9 +555,8 @@
         "alt": ""
       },
       {
-        "type": "image",
-        "src": "/acervo/2017_10_divisor-texto-nova-era.png",
-        "alt": ""
+        "type": "heading",
+        "text": "Infância e Juventude"
       },
       {
         "type": "paragraph",
@@ -630,15 +593,11 @@
       },
       {
         "type": "heading",
-        "text": "Estudos Sistematizado da Doutrina Espírita"
+        "text": "Estudos Sistematizados da Doutrina Espírita"
       },
       {
         "type": "paragraph",
         "text": "O estudo da Doutrina Espírita, realizado de forma regular e sistematizada, segundo os critérios definidos por Allan Kardec, nos fornece meios para melhor compreender quem somos, de onde viemos, o que fazemos aqui e qual será a nossa destinação espiritual. Os primeiros passos começam aqui, neste livro. O primeiro de uma trilogia, quando tomamos conhecimento das orientações básicas que os Espíritos superiores transmitiram ao Codificador, tais como: Deus, Espírito, matéria, comunicabilidade dos Espíritos, reencarnação, pluralidade dos mundos habitados, o bem e o mal, a lei de adoração, entre outras."
-      },
-      {
-        "type": "heading",
-        "text": "Conteúdo Programático"
       },
       {
         "type": "subheading",
@@ -1438,6 +1397,10 @@
         "alt": ""
       },
       {
+        "type": "heading",
+        "text": "Palestras"
+      },
+      {
         "type": "paragraph",
         "text": "“Muitas pessoas, por não conhecerem os benefícios da palestra que precede o passe, desconsideram esta etapa importantíssima do acolhimento espiritual. Geralmente chegam apressadas, com o pensamento atormentado por problemas dos mais variados matizes, sem se dar conta de que perdem uma grande oportunidade de tornarem-se mais receptivos às energias absorvidas no passe e também de tornarem-se alvo das entidades benfazejas muito antes de entrarem na sala de atendimento."
       },
@@ -1459,6 +1422,10 @@
         "alt": ""
       },
       {
+        "type": "heading",
+        "text": "Reuniões Mediúnicas"
+      },
+      {
         "type": "paragraph",
         "text": "É uma reunião mediúnica aberta ao público em que pessoas encarnadas com processos obsessivos são encaminhadas e atendidas, sendo feito a atração de espíritos que possam estar influenciando-as negativamente, buscando o esclarecimento destes espíritos para que se afastem do encarnado e redirecionem suas vidas  a partir do acolhimento por equipes de espíritos socorristas possibilitando retomar a construção de uma vida edificante."
       },
@@ -1466,6 +1433,10 @@
         "type": "image",
         "src": "/acervo/2017_10_reuniao-mediunica.jpg",
         "alt": ""
+      },
+      {
+        "type": "heading",
+        "text": "Psicografia"
       },
       {
         "type": "paragraph",
@@ -1513,6 +1484,10 @@
         "alt": ""
       },
       {
+        "type": "heading",
+        "text": "Fluidoterapia – Passes"
+      },
+      {
         "type": "paragraph",
         "text": "Fluidoterapia ou Passe é a transfusão de energias fluídicas vitais (psíquicas) ou espirituais, utilizando-se a imposição das mãos, com o propósito de atuar em nível perispiritual, usada e ensinada por Jesus, como se vê nos Evangelhos.  Origina-se das práticas de cura do Cristianismo Primitivo."
       },
@@ -1538,6 +1513,10 @@
         "alt": ""
       },
       {
+        "type": "heading",
+        "text": "Passes Magnéticos"
+      },
+      {
         "type": "paragraph",
         "text": "O passe magnético não é um ato mediúnico. Trata-se de uma transfusão de energia magnética, algo semelhante à transfusão de sangue. Não é preciso uma condição especial para doar sangue. Apenas que o doador seja saudável. O mesmo acontece com o passe. Qualquer pessoa pode aplicá-lo, desde que conheça a técnica e se submeta às disciplinas que lhe são inerentes. Os espíritos de luz colaboram, oferecendo algo de seu próprio magnetismo, que se casa ao do passista."
       },
@@ -1559,6 +1538,10 @@
         "alt": ""
       },
       {
+        "type": "heading",
+        "text": "Grupo de Costura"
+      },
+      {
         "type": "paragraph",
         "text": "O Grupo de Costura do Nova Era surgiu, no final da década de 40, do desejo de colaboração de alguns membros para com as obras de assistência social do centro. Desde aquela época o seu trabalho visa a confecções de peças para doações e para suprir o bazar. O presente grupo também auxilia nas atividades sócio-culturais realizadas nas comemorações pela infância e juventude."
       },
@@ -1566,6 +1549,10 @@
         "type": "image",
         "src": "/acervo/2018_02_grupo-de-custura.jpg",
         "alt": ""
+      },
+      {
+        "type": "heading",
+        "text": "Bazar Permanente"
       },
       {
         "type": "paragraph",

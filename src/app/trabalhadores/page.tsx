@@ -17,7 +17,7 @@ export default async function Page() {
     ) ?? [];
 
   return (
-    <PageShell title="Trabalhadores">
+    <PageShell title="Trabalhadores" image="/acervo/2017_10_2005-encontro-trabalhadores-1.jpg">
       {intro.length > 0 && (
         <div className="mx-auto mb-10 max-w-2xl">
           <Blocks blocks={intro} />

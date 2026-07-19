@@ -201,17 +201,32 @@ export type ScheduleInput = {
   mode: string;
 };
 
-export async function saveSchedule(items: ScheduleInput[]): Promise<SaveResult> {
+export async function saveSchedule(
+  items: ScheduleInput[],
+  note: string
+): Promise<SaveResult> {
   await requireAdmin();
   const db = await getDb();
   const current = await db.select().from(schema.scheduleItems);
-  await saveRevision("schedule", current, "Horários");
+  const currentNote = await db
+    .select()
+    .from(schema.settings)
+    .where(eq(schema.settings.key, "schedule_note"));
+  await saveRevision(
+    "schedule",
+    { items: current, note: currentNote[0]?.value ?? "" },
+    "Horários"
+  );
   await db.delete(schema.scheduleItems);
   if (items.length > 0) {
     await db
       .insert(schema.scheduleItems)
       .values(items.map((s, i) => ({ ...s, sort: i })));
   }
+  await db
+    .insert(schema.settings)
+    .values({ key: "schedule_note", value: note })
+    .onConflictDoUpdate({ target: schema.settings.key, set: { value: note } });
   publish();
   return OK;
 }
@@ -356,12 +371,22 @@ export async function undo(entity: string): Promise<SaveResult> {
         .onConflictDoUpdate({ target: schema.settings.key, set: { value } });
     }
   } else if (entity === "schedule") {
-    const rows = snap as Array<typeof schema.scheduleItems.$inferInsert>;
+    // snapshots antigos eram só a lista; novos são { items, note }
+    type Row = typeof schema.scheduleItems.$inferInsert;
+    const data = Array.isArray(snap)
+      ? { items: snap as Row[], note: null }
+      : (snap as { items: Row[]; note: string | null });
     await db.delete(schema.scheduleItems);
-    if (rows.length > 0) {
+    if (data.items.length > 0) {
       await db.insert(schema.scheduleItems).values(
-        rows.map(({ day, time, activity, mode, sort }) => ({ day, time, activity, mode, sort }))
+        data.items.map(({ day, time, activity, mode, sort }) => ({ day, time, activity, mode, sort }))
       );
+    }
+    if (data.note !== null) {
+      await db
+        .insert(schema.settings)
+        .values({ key: "schedule_note", value: data.note })
+        .onConflictDoUpdate({ target: schema.settings.key, set: { value: data.note } });
     }
   } else if (entity.startsWith("people:")) {
     const kind = entity.split(":")[1];

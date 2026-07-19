@@ -12,6 +12,7 @@ export default async function Page() {
   return (
     <PageShell
       title="Publicações"
+      image="/acervo/2018_09_dialogo-espirita-panoramica.jpeg"
       intro="Registros de palestras, seminários e atividades da casa."
     >
       <div className="grid gap-5 sm:grid-cols-2">
@@ -30,13 +31,13 @@ export default async function Page() {
                 className="h-48 w-full object-cover"
               />
             ) : (
-              <div className="h-48 w-full bg-twilight-700" />
+              <div className="h-48 w-full bg-petrol-700" />
             )}
             <div className="px-5 py-4">
               <p className="text-xs tracking-wider text-coral-700 uppercase">
                 {post.category || "Publicação"} · {formatDate(post.date)}
               </p>
-              <h2 className="mt-1.5 font-display text-xl leading-snug text-twilight-700 group-hover:text-coral-600">
+              <h2 className="mt-1.5 font-display text-xl leading-snug text-petrol-700 group-hover:text-coral-600">
                 {post.title}
               </h2>
             </div>

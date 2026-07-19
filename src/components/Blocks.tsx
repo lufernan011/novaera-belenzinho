@@ -53,7 +53,7 @@ export default function Blocks({ blocks }: { blocks: Block[] }) {
         }
         if (group.type === "heading") {
           return (
-            <h2 key={i} className="pt-4 font-display text-2xl text-twilight-700 sm:text-3xl">
+            <h2 key={i} className="pt-4 font-display text-2xl text-petrol-700 sm:text-3xl">
               {group.text}
             </h2>
           );

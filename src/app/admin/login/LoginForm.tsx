@@ -18,7 +18,7 @@ export default function LoginForm({
         <>
           <label
             htmlFor="userId"
-            className="mb-1.5 block text-[16px] font-medium text-twilight-700"
+            className="mb-1.5 block text-[16px] font-medium text-petrol-700"
           >
             Quem é você?
           </label>
@@ -45,7 +45,7 @@ export default function LoginForm({
 
       <label
         htmlFor="pin"
-        className="mb-1.5 mt-4 block text-[16px] font-medium text-twilight-700"
+        className="mb-1.5 mt-4 block text-[16px] font-medium text-petrol-700"
       >
         {withUsers ? "Sua senha" : "Senha mestre"}
       </label>

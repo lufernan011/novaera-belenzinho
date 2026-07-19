@@ -9,10 +9,13 @@ const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
 
 export default function ScheduleEditor({
   initial,
+  initialNote,
 }: {
   initial: ScheduleInput[];
+  initialNote: string;
 }) {
   const [items, setItems] = useState<ScheduleInput[]>(initial);
+  const [note, setNote] = useState(initialNote);
 
   function update(index: number, patch: Partial<ScheduleInput>) {
     setItems((list) => list.map((it, i) => (i === index ? { ...it, ...patch } : it)));
@@ -39,7 +42,7 @@ export default function ScheduleEditor({
           .filter(({ item }) => item.day === day);
         return (
           <section key={day} className="mb-6">
-            <h2 className="mb-2 font-display text-xl text-twilight-700">
+            <h2 className="mb-2 font-display text-xl text-petrol-700">
               {DAY_NAMES[day]}
             </h2>
             {dayItems.length === 0 && (
@@ -96,9 +99,29 @@ export default function ScheduleEditor({
         );
       })}
 
+      <section className="mt-2">
+        <label htmlFor="schedule-note" className="mb-1.5 block font-display text-xl text-petrol-700">
+          Aviso no fim da página
+        </label>
+        <textarea
+          id="schedule-note"
+          rows={3}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder="Ex.: Psicografia: primeira quinta-feira do mês, às 20h…"
+          className={inputCls}
+        />
+        <p className="mt-1 text-[14px] text-ink-500">
+          Aparece numa caixinha no fim da página de Horários. Deixe vazio para
+          não mostrar aviso nenhum.
+        </p>
+      </section>
+
       <SaveBar
         entity="schedule"
-        onSave={() => saveSchedule(items.filter((i) => i.activity.trim() && i.time))}
+        onSave={() =>
+          saveSchedule(items.filter((i) => i.activity.trim() && i.time), note.trim())
+        }
         onUndone={() => window.location.reload()}
       />
     </main>

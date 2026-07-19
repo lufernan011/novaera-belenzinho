@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
-import { DAY_NAMES, getSchedule, todayInSaoPaulo } from "@/lib/content";
+import { DAY_NAMES, getSchedule, getSettings, todayInSaoPaulo } from "@/lib/content";
 
 export const metadata: Metadata = { title: "Horários" };
 
 export default async function Page() {
-  const schedule = await getSchedule();
+  const [schedule, settings] = await Promise.all([getSchedule(), getSettings()]);
   const today = todayInSaoPaulo();
   const days = [1, 2, 3, 4, 5, 6, 0]
     .map((day) => ({ day, items: schedule.filter((s) => s.day === day) }))
@@ -14,6 +14,7 @@ export default async function Page() {
   return (
     <PageShell
       title="Horários"
+      image="/images/relogio.jpg"
       intro="Nossas atividades regulares, presenciais e online. Chegue alguns minutos antes — será muito bem-vindo."
     >
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -30,7 +31,7 @@ export default async function Page() {
               }`}
             >
               <header className="mb-3 flex items-center justify-between gap-2">
-                <h2 className="font-display text-xl text-twilight-700">
+                <h2 className="font-display text-xl text-petrol-700">
                   {DAY_NAMES[day]}
                 </h2>
                 <div className="flex gap-1.5">
@@ -42,7 +43,7 @@ export default async function Page() {
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       online
-                        ? "bg-twilight-100 text-twilight-700"
+                        ? "bg-petrol-100 text-petrol-700"
                         : "bg-sand-200 text-coral-700"
                     }`}
                   >
@@ -64,10 +65,11 @@ export default async function Page() {
           );
         })}
       </div>
-      <p className="mt-8 rounded-xl border border-sand-200 bg-sand-100 px-5 py-4 text-[15px] text-ink-600">
-        Psicografia: primeira quinta-feira do mês, às 20h, com solicitação
-        antecipada na secretaria. Passes magnéticos requerem entrevista prévia.
-      </p>
+      {settings.schedule_note?.trim() && (
+        <p className="mt-8 rounded-xl border border-sand-200 bg-sand-100 px-5 py-4 text-[15px] text-ink-600">
+          {settings.schedule_note}
+        </p>
+      )}
     </PageShell>
   );
 }

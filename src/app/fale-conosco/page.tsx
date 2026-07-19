@@ -14,11 +14,12 @@ export default async function Page() {
   return (
     <PageShell
       title="Fale Conosco"
+      image="/images/hero.jpg"
       intro="O Centro Espírita Nova Era é uma casa de apoio e esclarecimento físico e espiritual, sem fins lucrativos. Será um prazer receber você."
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <section className="rounded-2xl border border-sand-200 bg-white p-6">
-          <h2 className="mb-3 font-display text-2xl text-twilight-700">Onde estamos</h2>
+          <h2 className="mb-3 font-display text-2xl text-petrol-700">Onde estamos</h2>
           <p className="text-[17px] leading-relaxed">
             {s.address_street}
             <br />
@@ -29,14 +30,14 @@ export default async function Page() {
           <a
             href={mapsUrl}
             rel="noopener"
-            className="mt-4 inline-block rounded-full bg-twilight-700 px-6 py-3 text-[16px] text-white transition hover:bg-twilight-600"
+            className="mt-4 inline-block rounded-full bg-petrol-700 px-6 py-3 text-[16px] text-white transition hover:bg-petrol-600"
           >
             Ver no mapa
           </a>
         </section>
 
         <section className="rounded-2xl border border-sand-200 bg-white p-6">
-          <h2 className="mb-3 font-display text-2xl text-twilight-700">Contato</h2>
+          <h2 className="mb-3 font-display text-2xl text-petrol-700">Contato</h2>
           <p className="text-[17px] leading-relaxed">
             Telefone:{" "}
             <a href={`tel:+55${phoneDigits}`} className="text-coral-600 hover:underline">
@@ -61,7 +62,7 @@ export default async function Page() {
         </section>
 
         <section className="rounded-2xl border border-sand-200 bg-white p-6 sm:col-span-2">
-          <h2 className="mb-3 font-display text-2xl text-twilight-700">
+          <h2 className="mb-3 font-display text-2xl text-petrol-700">
             Horário da secretaria
           </h2>
           <p className="text-[17px] leading-relaxed">{s.secretary_hours}</p>

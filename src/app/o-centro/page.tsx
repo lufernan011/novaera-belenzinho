@@ -42,6 +42,7 @@ export default function Page() {
   return (
     <PageShell
       title="O Centro"
+      image="/images/campo.jpg"
       intro="Conheça a história, as pessoas e os trabalhos do Centro Espírita Nova Era."
     >
       <div className="grid gap-5 sm:grid-cols-2">
@@ -59,7 +60,7 @@ export default function Page() {
               className="h-24 w-24 shrink-0 rounded-xl object-cover object-top"
             />
             <span>
-              <span className="font-display text-xl text-twilight-700 group-hover:text-coral-600">
+              <span className="font-display text-xl text-petrol-700 group-hover:text-coral-600">
                 {s.title}
               </span>
               <span className="mt-1 block text-[15px] leading-relaxed text-ink-600">

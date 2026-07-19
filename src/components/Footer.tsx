@@ -5,7 +5,7 @@ export default async function Footer() {
   const s = await getSettings();
 
   return (
-    <footer className="mt-auto bg-twilight-800 text-twilight-100">
+    <footer className="mt-auto bg-petrol-800 text-petrol-100">
       <div className="mx-auto grid max-w-6xl gap-8 px-5 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <h2 className="mb-2 font-display text-lg text-amber-500">Endereço</h2>
@@ -51,7 +51,7 @@ export default async function Footer() {
           </p>
         </div>
       </div>
-      <div className="border-t border-white/10 py-4 text-center text-sm text-twilight-100/70">
+      <div className="border-t border-white/10 py-4 text-center text-sm text-petrol-100/70">
         Centro Espírita Nova Era · Belenzinho, São Paulo · desde 1947
       </div>
     </footer>

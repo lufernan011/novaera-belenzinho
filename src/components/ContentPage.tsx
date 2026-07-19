@@ -4,7 +4,13 @@ import Blocks from "@/components/Blocks";
 import { getPage } from "@/lib/content";
 
 /** Página institucional genérica: título + blocos do acervo. */
-export default async function ContentPage({ slug }: { slug: string }) {
+export default async function ContentPage({
+  slug,
+  image,
+}: {
+  slug: string;
+  image?: string;
+}) {
   const page = await getPage(slug);
   if (!page) notFound();
 
@@ -19,7 +25,7 @@ export default async function ContentPage({ slug }: { slug: string }) {
   );
 
   return (
-    <PageShell title={page.title}>
+    <PageShell title={page.title} image={image}>
       <Blocks blocks={blocks} />
     </PageShell>
   );

@@ -16,6 +16,7 @@ export default async function Page() {
   return (
     <PageShell
       title="Diretoria"
+      image="/acervo/2017_10_reforma-concluida-1.jpg"
       intro="Dedicamos esta seção a honrar e homenagear nosso corpo diretivo, cujo esforço mantém viva a nossa casa. Agradecemos também a todos que passaram pelo quadro de diretores desde a fundação."
     >
       <div className="mx-auto max-w-3xl space-y-10">
@@ -30,7 +31,7 @@ export default async function Page() {
                   <div className="flex justify-center">
                     <PersonAvatar name={p.name} photo={p.photo} size={96} />
                   </div>
-                  <p className="mt-3 font-display text-[17px] leading-snug text-twilight-700">
+                  <p className="mt-3 font-display text-[17px] leading-snug text-petrol-700">
                     {p.name}
                   </p>
                   {p.role && (

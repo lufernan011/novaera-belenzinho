@@ -11,6 +11,7 @@ export default async function Page() {
   return (
     <PageShell
       title="Presidentes"
+      image="/acervo/2017_10_fundacao-nova-era.jpg"
       intro="As gestões que conduziram o Nova Era ao longo das décadas. Pedimos desculpas antecipadas por eventuais omissões."
     >
       <ol className="relative mx-auto max-w-2xl border-l-2 border-sand-300 pl-8">
@@ -31,7 +32,7 @@ export default async function Page() {
                 />
               ) : null}
               <div className="min-w-40">
-                <p className="font-display text-xl leading-snug text-twilight-700">
+                <p className="font-display text-xl leading-snug text-petrol-700">
                   {p.name}
                 </p>
                 {p.role && (

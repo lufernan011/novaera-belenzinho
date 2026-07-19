@@ -13,6 +13,7 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.novaerabelenzinho.org.br"),
   title: {
     default: "Centro Espírita Nova Era – Belenzinho",
     template: "%s | Centro Espírita Nova Era",
