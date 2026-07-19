@@ -50,9 +50,9 @@ export default async function Home() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[center_62%]"
+            className="object-cover object-[center_38%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-petrol-900/50 via-petrol-900/15 to-petrol-900/85" />
+          <div className="absolute inset-0 bg-gradient-to-b from-petrol-900/25 via-petrol-900/0 to-petrol-900/60" />
           <div className="relative z-10 w-full px-5 pb-24 pt-36 text-center sm:pt-44">
             <p className="mb-3 flex items-center justify-center gap-3 text-[12px] tracking-[0.25em] text-white/95 uppercase sm:text-[13px]">
               <span aria-hidden className="h-px w-8 bg-amber-500/90" />
