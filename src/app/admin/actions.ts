@@ -235,7 +235,7 @@ export async function saveSchedule(
 /* Pessoas (diretoria, presidentes, trabalhadores)                     */
 /* ------------------------------------------------------------------ */
 
-export type PersonInput = { name: string; role: string; photo: string };
+export type PersonInput = { name: string; role: string; photo: string; group?: string };
 
 export async function savePeople(
   kind: "board" | "president" | "worker",
@@ -394,7 +394,7 @@ export async function undo(entity: string): Promise<SaveResult> {
     await db.delete(schema.people).where(eq(schema.people.kind, kind));
     if (rows.length > 0) {
       await db.insert(schema.people).values(
-        rows.map(({ name, role, photo, sort }) => ({ kind, name, role, photo, sort }))
+        rows.map(({ name, role, photo, group, sort }) => ({ kind, name, role, photo, group: group ?? "", sort }))
       );
     }
   } else if (entity.startsWith("page:")) {

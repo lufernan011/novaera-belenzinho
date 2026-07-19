@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { savePeople, type PersonInput } from "@/app/admin/actions";
-import { BOARD_GROUPS, boardGroup, workerTags } from "@/lib/people";
+import { BOARD_GROUPS, workerTags } from "@/lib/people";
 import { EditorHeader, PhotoInput, RowControls, SaveBar, inputCls } from "./ui";
 
-/** Mostra onde a pessoa vai aparecer no site, conforme o cargo digitado. */
+/** Mostra onde a pessoa vai aparecer no site, conforme o que foi digitado. */
 function SitePreviewHint({
   kind,
   role,
@@ -13,17 +13,9 @@ function SitePreviewHint({
   kind: "board" | "president" | "worker";
   role: string;
 }) {
-  if (kind === "president") return null;
+  if (kind !== "worker") return null;
   const chipCls =
     "rounded-full bg-sand-100 border border-sand-300 px-2.5 py-0.5 text-[13px] text-coral-700";
-  if (kind === "board") {
-    const label = BOARD_GROUPS.find((g) => g.key === boardGroup(role))!.label;
-    return (
-      <p className="mt-1.5 text-[13px] text-ink-500">
-        No site, aparece no grupo: <span className={chipCls}>{label}</span>
-      </p>
-    );
-  }
   const tags = workerTags(role);
   if (tags.length === 0) return null;
   return (
@@ -65,9 +57,23 @@ export default function PeopleEditor({
     });
   }
 
+  const groupSuggestions = [
+    ...new Set([
+      ...items.map((p) => p.group?.trim()).filter((g): g is string => !!g),
+      ...BOARD_GROUPS.filter((g) => g.key !== "outros").map((g) => g.label),
+    ]),
+  ];
+
   return (
     <main className="mx-auto max-w-3xl px-5 py-10">
       <EditorHeader title={title} hint={hint} />
+      {kind === "board" && (
+        <datalist id="board-groups">
+          {groupSuggestions.map((g) => (
+            <option key={g} value={g} />
+          ))}
+        </datalist>
+      )}
       <ul className="space-y-3">
         {items.map((p, i) => (
           <li key={i} className="rounded-2xl border border-sand-300 bg-white p-4">
@@ -90,6 +96,23 @@ export default function PeopleEditor({
                   className={inputCls}
                   aria-label={roleLabel}
                 />
+                {kind === "board" && (
+                  <div>
+                    <input
+                      type="text"
+                      list="board-groups"
+                      value={p.group ?? ""}
+                      onChange={(e) => update(i, { group: e.target.value })}
+                      placeholder="Grupo no site (ex.: Secretaria)"
+                      className={inputCls}
+                      aria-label="Grupo no site"
+                    />
+                    <p className="mt-1 text-[13px] text-ink-500">
+                      Escolha um grupo da lista ou digite um nome novo para
+                      criar outro (ex.: Comunicação).
+                    </p>
+                  </div>
+                )}
                 <SitePreviewHint kind={kind} role={p.role} />
               </div>
               <RowControls

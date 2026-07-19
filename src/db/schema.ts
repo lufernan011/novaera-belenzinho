@@ -36,6 +36,8 @@ export const people = pgTable("people", {
   name: text("name").notNull(),
   role: text("role").notNull().default(""),
   photo: text("photo").notNull().default(""),
+  /** Grupo na página Diretoria (Secretaria, Tesouraria...) — livre. */
+  group: text("group").notNull().default(""),
   sort: integer("sort").notNull().default(0),
 });
 

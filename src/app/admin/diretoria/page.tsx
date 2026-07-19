@@ -9,9 +9,9 @@ export default async function Page() {
     <PeopleEditor
       kind="board"
       title="Diretoria"
-      hint="O site agrupa as pessoas automaticamente pelo cargo (Secretaria, Tesouraria, Biblioteca, Conselho Fiscal) — a etiqueta abaixo de cada cargo mostra onde a pessoa vai aparecer."
+      hint="Cada pessoa pertence a um grupo (Secretaria, Tesouraria...), que vira uma seção na página. Para criar um grupo novo, basta digitar um nome novo no campo. A ordem das pessoas define a ordem dos grupos no site."
       roleLabel="Cargo (ex.: 1ª Secretária)"
-      initial={people.map(({ name, role, photo }) => ({ name, role, photo }))}
+      initial={people.map(({ name, role, photo, group }) => ({ name, role, photo, group }))}
     />
   );
 }

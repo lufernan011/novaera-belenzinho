@@ -24,6 +24,12 @@ export function boardGroup(role: string): BoardGroupKey {
   return "outros";
 }
 
+/** Grupo efetivo de um membro da diretoria: campo explícito ou dedução pelo cargo. */
+export function effectiveBoardGroup(person: { role: string; group?: string | null }): string {
+  if (person.group?.trim()) return person.group.trim();
+  return BOARD_GROUPS.find((g) => g.key === boardGroup(person.role))!.label;
+}
+
 /** "Palestras, Passes e Cursos" → ["Palestras", "Passes", "Cursos"]. */
 export function workerTags(role: string): string[] {
   return role
