@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   // PGlite (banco local de dev) carrega WASM — não pode ser empacotado
   serverExternalPackages: ["@electric-sql/pglite"],
+  images: {
+    // fotos enviadas pelo admin ficam no Vercel Blob
+    remotePatterns: [
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+    ],
+  },
 };
 
 export default nextConfig;
