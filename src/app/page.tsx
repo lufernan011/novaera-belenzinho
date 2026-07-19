@@ -43,23 +43,26 @@ export default async function Home() {
     <>
       <div className="relative">
         <Header overlay />
-        <section className="relative flex min-h-[520px] items-end justify-center overflow-hidden sm:min-h-[600px]">
+        <section className="relative flex min-h-[540px] items-end justify-center overflow-hidden sm:min-h-[640px]">
           <Image
             src="/images/hero.jpg"
             alt="Pôr do sol tranquilo sobre um lago"
             fill
             priority
-            className="object-cover"
+            className="object-cover object-[center_35%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-twilight-900/60 via-transparent to-twilight-900/70" />
-          <div className="relative z-10 px-5 pb-16 pt-40 text-center">
-            <p className="mb-3 text-sm tracking-widest text-amber-300 uppercase">
+          {/* scrim: leve no céu (preserva o sol), firme atrás do texto */}
+          <div className="absolute inset-0 bg-gradient-to-b from-twilight-900/45 via-twilight-900/10 to-twilight-900/85" />
+          <div className="relative z-10 w-full px-5 pb-14 pt-64 text-center sm:pt-80">
+            <p className="mb-4 flex items-center justify-center gap-3 text-[13px] tracking-[0.25em] text-white/95 uppercase sm:text-sm">
+              <span aria-hidden className="h-px w-8 bg-amber-500/90" />
               Casa de apoio e esclarecimento · Zona Leste, SP
+              <span aria-hidden className="h-px w-8 bg-amber-500/90" />
             </p>
-            <h1 className="mx-auto max-w-2xl font-display text-4xl leading-tight text-white sm:text-5xl">
+            <h1 className="mx-auto max-w-2xl font-display text-4xl leading-tight text-white drop-shadow-[0_2px_16px_rgba(30,39,64,0.55)] sm:text-5xl">
               “{settings.hero_quote}”
             </h1>
-            <p className="mx-auto mt-4 max-w-xl text-lg text-white/90">
+            <p className="mx-auto mt-4 max-w-xl text-lg text-white/95 drop-shadow-[0_1px_8px_rgba(30,39,64,0.6)]">
               {settings.site_tagline}
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">

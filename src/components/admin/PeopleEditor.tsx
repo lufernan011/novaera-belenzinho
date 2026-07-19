@@ -2,7 +2,41 @@
 
 import { useState } from "react";
 import { savePeople, type PersonInput } from "@/app/admin/actions";
+import { BOARD_GROUPS, boardGroup, workerTags } from "@/lib/people";
 import { EditorHeader, PhotoInput, RowControls, SaveBar, inputCls } from "./ui";
+
+/** Mostra onde a pessoa vai aparecer no site, conforme o cargo digitado. */
+function SitePreviewHint({
+  kind,
+  role,
+}: {
+  kind: "board" | "president" | "worker";
+  role: string;
+}) {
+  if (kind === "president") return null;
+  const chipCls =
+    "rounded-full bg-sand-100 border border-sand-300 px-2.5 py-0.5 text-[13px] text-coral-700";
+  if (kind === "board") {
+    const label = BOARD_GROUPS.find((g) => g.key === boardGroup(role))!.label;
+    return (
+      <p className="mt-1.5 text-[13px] text-ink-500">
+        No site, aparece no grupo: <span className={chipCls}>{label}</span>
+      </p>
+    );
+  }
+  const tags = workerTags(role);
+  if (tags.length === 0) return null;
+  return (
+    <p className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[13px] text-ink-500">
+      Entra nos filtros:
+      {tags.map((t) => (
+        <span key={t} className={chipCls}>
+          {t}
+        </span>
+      ))}
+    </p>
+  );
+}
 
 export default function PeopleEditor({
   kind,
@@ -56,6 +90,7 @@ export default function PeopleEditor({
                   className={inputCls}
                   aria-label={roleLabel}
                 />
+                <SitePreviewHint kind={kind} role={p.role} />
               </div>
               <RowControls
                 onUp={i > 0 ? () => move(i, -1) : undefined}

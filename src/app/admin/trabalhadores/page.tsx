@@ -9,7 +9,7 @@ export default async function Page() {
     <PeopleEditor
       kind="worker"
       title="Trabalhadores"
-      hint="A homenagem aos voluntários da casa. Adicione, remova ou reordene."
+      hint="A homenagem aos voluntários. Os trabalhos escritos no campo abaixo viram filtros na página (ex.: Palestras, Passes) — separe por vírgula."
       roleLabel="Trabalho (ex.: Palestras, Passes)"
       initial={people.map(({ name, role, photo }) => ({ name, role, photo }))}
     />

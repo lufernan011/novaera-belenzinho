@@ -9,7 +9,7 @@ export default async function Page() {
     <PeopleEditor
       kind="president"
       title="Presidentes"
-      hint="As gestões da casa, da mais recente para a mais antiga. Você pode incluir o período no cargo (ex.: Presidente 2010–2014)."
+      hint="O site mostra as gestões numa linha do tempo, na ordem desta lista (a primeira aparece no topo). Inclua o período no cargo, ex.: Presidente / Vice · 2010–2014."
       roleLabel="Cargo e período (ex.: Presidente / Vice · 2010–2014)"
       initial={people.map(({ name, role, photo }) => ({ name, role, photo }))}
     />

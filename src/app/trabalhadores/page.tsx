@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
-import PeopleGrid from "@/components/PeopleGrid";
 import Blocks from "@/components/Blocks";
+import WorkersMural from "@/components/WorkersMural";
 import { getPage, getPeople } from "@/lib/content";
 
 export const metadata: Metadata = { title: "Trabalhadores" };
@@ -19,11 +19,13 @@ export default async function Page() {
   return (
     <PageShell title="Trabalhadores">
       {intro.length > 0 && (
-        <div className="mb-10">
+        <div className="mx-auto mb-10 max-w-2xl">
           <Blocks blocks={intro} />
         </div>
       )}
-      <PeopleGrid people={workers} columns={4} />
+      <WorkersMural
+        workers={workers.map(({ id, name, role, photo }) => ({ id, name, role, photo }))}
+      />
     </PageShell>
   );
 }

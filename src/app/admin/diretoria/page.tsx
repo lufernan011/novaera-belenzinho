@@ -9,7 +9,7 @@ export default async function Page() {
     <PeopleEditor
       kind="board"
       title="Diretoria"
-      hint="Adicione, remova ou reordene os membros. A ordem aqui é a ordem no site."
+      hint="O site agrupa as pessoas automaticamente pelo cargo (Secretaria, Tesouraria, Biblioteca, Conselho Fiscal) — a etiqueta abaixo de cada cargo mostra onde a pessoa vai aparecer."
       roleLabel="Cargo (ex.: 1ª Secretária)"
       initial={people.map(({ name, role, photo }) => ({ name, role, photo }))}
     />
