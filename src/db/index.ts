@@ -14,6 +14,10 @@ export async function getDb() {
     const { drizzle } = await import("drizzle-orm/neon-http");
     const { neon } = await import("@neondatabase/serverless");
     _db = drizzle(neon(url), { schema });
+  } else if (process.env.VERCEL) {
+    throw new Error(
+      "DATABASE_URL não configurada na Vercel — crie o banco Neon em Storage e faça redeploy"
+    );
   } else {
     const { drizzle } = await import("drizzle-orm/pglite");
     const { PGlite } = await import("@electric-sql/pglite");
