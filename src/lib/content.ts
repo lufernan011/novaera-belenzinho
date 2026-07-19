@@ -33,6 +33,30 @@ export const getSchedule = cache(async (): Promise<ScheduleItem[]> => {
     .orderBy(asc(schema.scheduleItems.day), asc(schema.scheduleItems.time), asc(schema.scheduleItems.sort));
 });
 
+/**
+ * Próximo dia com atividades a partir de hoje (inclusive).
+ * label: "Hoje" | "Amanhã" | "Próxima atividade".
+ */
+export function nextActiveDay(schedule: ScheduleItem[]): {
+  day: number;
+  label: string;
+  items: ScheduleItem[];
+} {
+  const today = todayInSaoPaulo();
+  for (let offset = 0; offset <= 6; offset++) {
+    const day = (today + offset) % 7;
+    const items = schedule.filter((s) => s.day === day);
+    if (items.length > 0) {
+      return {
+        day,
+        label: offset === 0 ? "Hoje" : offset === 1 ? "Amanhã" : "Próxima atividade",
+        items,
+      };
+    }
+  }
+  return { day: today, label: "Hoje", items: [] };
+}
+
 /** Dia da semana atual em São Paulo (0=domingo). */
 export function todayInSaoPaulo(): number {
   const weekday = new Intl.DateTimeFormat("en-US", {

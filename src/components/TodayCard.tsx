@@ -1,24 +1,13 @@
 import Link from "next/link";
-import { DAY_NAMES, getSchedule, todayInSaoPaulo } from "@/lib/content";
+import { DAY_NAMES, getSchedule, nextActiveDay } from "@/lib/content";
 
 /**
  * Destaque "Hoje no Nova Era" da home: cartão sobreposto ao hero com as
  * atividades do dia — ou as do próximo dia com atividades.
  */
 export default async function TodayCard() {
-  const [schedule, today] = [await getSchedule(), todayInSaoPaulo()];
-
-  let day = today;
-  let label = "Hoje";
-  for (let offset = 0; offset <= 6; offset++) {
-    const candidate = (today + offset) % 7;
-    if (schedule.some((s) => s.day === candidate)) {
-      day = candidate;
-      label = offset === 0 ? "Hoje" : offset === 1 ? "Amanhã" : "Próxima atividade";
-      break;
-    }
-  }
-  const items = schedule.filter((s) => s.day === day);
+  const schedule = await getSchedule();
+  const { day, label, items } = nextActiveDay(schedule);
 
   return (
     <div className="relative z-10 mx-auto -mt-14 w-full max-w-4xl px-5">
