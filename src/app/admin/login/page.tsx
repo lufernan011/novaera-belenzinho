@@ -1,11 +1,19 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { asc } from "drizzle-orm";
+import { getDb, schema } from "@/db";
 import { getSession } from "@/lib/session";
 import LoginForm from "./LoginForm";
 
 export default async function LoginPage() {
   const session = await getSession();
   if (session.isAdmin) redirect("/admin/");
+
+  const db = await getDb();
+  const users: Array<{ id: number; name: string }> = await db
+    .select({ id: schema.users.id, name: schema.users.name })
+    .from(schema.users)
+    .orderBy(asc(schema.users.name));
 
   return (
     <main className="flex min-h-screen items-center justify-center px-5">
@@ -21,9 +29,11 @@ export default async function LoginPage() {
           Área da diretoria
         </h1>
         <p className="mt-1 text-[16px] text-ink-600">
-          Digite a senha para entrar.
+          {users.length > 0
+            ? "Escolha seu nome e digite sua senha."
+            : "Digite a senha para entrar."}
         </p>
-        <LoginForm />
+        <LoginForm users={users} />
       </div>
     </main>
   );

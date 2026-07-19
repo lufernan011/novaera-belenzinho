@@ -24,11 +24,26 @@ function safeEqual(a: string, b: string): boolean {
   return crypto.timingSafeEqual(ba, bb) && a.length === b.length;
 }
 
+/** Hash de senha com scrypt (sem dependência externa). */
+export async function hashPassword(password: string): Promise<string> {
+  const salt = crypto.randomBytes(16).toString("hex");
+  const hash = crypto.scryptSync(password, salt, 64).toString("hex");
+  return `${salt}:${hash}`;
+}
+
+function verifyPassword(password: string, stored: string): boolean {
+  const [salt, hash] = stored.split(":");
+  if (!salt || !hash) return false;
+  const candidate = crypto.scryptSync(password, salt, 64);
+  return crypto.timingSafeEqual(candidate, Buffer.from(hash, "hex"));
+}
+
 export async function login(
   _prev: { error?: string } | undefined,
   formData: FormData
 ): Promise<{ error?: string }> {
-  const pin = String(formData.get("pin") ?? "").trim();
+  const userIdRaw = String(formData.get("userId") ?? "").trim();
+  const password = String(formData.get("pin") ?? "").trim();
   const ip =
     (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
 
@@ -40,8 +55,7 @@ export async function login(
     };
   }
 
-  const expected = process.env.ADMIN_PIN ?? "";
-  if (!expected || !safeEqual(pin, expected)) {
+  const fail = () => {
     entry.count += 1;
     if (entry.count >= MAX_ATTEMPTS) {
       entry.lockedUntil = Date.now() + LOCK_MS;
@@ -49,13 +63,79 @@ export async function login(
     }
     attempts.set(ip, entry);
     return { error: "Senha incorreta. Confira e tente novamente." };
+  };
+
+  let userId: number | undefined;
+  let userName = "";
+
+  if (userIdRaw === "master" || userIdRaw === "") {
+    // Senha mestre: primeiro acesso (sem usuários) ou recuperação
+    const expected = process.env.ADMIN_PIN ?? "";
+    if (!expected || !safeEqual(password, expected)) return fail();
+    userName = "Recuperação";
+  } else {
+    const db = await getDb();
+    const rows = await db
+      .select()
+      .from(schema.users)
+      .where(eq(schema.users.id, Number(userIdRaw)));
+    const user = rows[0];
+    if (!user || !verifyPassword(password, user.passwordHash)) return fail();
+    userId = user.id;
+    userName = user.name;
   }
 
   attempts.delete(ip);
   const session = await getSession();
   session.isAdmin = true;
+  session.userId = userId;
+  session.userName = userName;
   await session.save();
   redirect("/admin/");
+}
+
+/* ------------------------------------------------------------------ */
+/* Pessoas com acesso                                                  */
+/* ------------------------------------------------------------------ */
+
+export async function createUser(
+  name: string,
+  password: string
+): Promise<SaveResult> {
+  await requireAdmin();
+  if (!name.trim()) return { ok: false, message: "Escreva o nome da pessoa." };
+  if (password.length < 4) {
+    return { ok: false, message: "A senha precisa ter pelo menos 4 caracteres." };
+  }
+  const db = await getDb();
+  await db.insert(schema.users).values({
+    name: name.trim(),
+    passwordHash: await hashPassword(password),
+  });
+  return { ok: true, message: `Pronto! ${name.trim()} já pode entrar.` };
+}
+
+export async function changeUserPassword(
+  id: number,
+  password: string
+): Promise<SaveResult> {
+  await requireAdmin();
+  if (password.length < 4) {
+    return { ok: false, message: "A senha precisa ter pelo menos 4 caracteres." };
+  }
+  const db = await getDb();
+  await db
+    .update(schema.users)
+    .set({ passwordHash: await hashPassword(password) })
+    .where(eq(schema.users.id, id));
+  return { ok: true, message: "Senha trocada." };
+}
+
+export async function deleteUser(id: number): Promise<SaveResult> {
+  await requireAdmin();
+  const db = await getDb();
+  await db.delete(schema.users).where(eq(schema.users.id, id));
+  return { ok: true, message: "Acesso removido." };
 }
 
 export async function logout(): Promise<void> {
@@ -70,7 +150,13 @@ export async function logout(): Promise<void> {
 
 async function saveRevision(entity: string, snapshot: unknown, label: string) {
   const db = await getDb();
-  await db.insert(schema.revisions).values({ entity, snapshot, label });
+  const session = await getSession();
+  await db.insert(schema.revisions).values({
+    entity,
+    snapshot,
+    label,
+    author: session.userName ?? "",
+  });
 }
 
 /** Publica na hora: invalida o cache de todas as páginas do site. */

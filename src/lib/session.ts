@@ -2,7 +2,12 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getIronSession, type IronSession } from "iron-session";
 
-export type AdminSession = { isAdmin?: boolean };
+export type AdminSession = {
+  isAdmin?: boolean;
+  userId?: number;
+  /** Nome de quem entrou (ou "Recuperação" na senha mestre). */
+  userName?: string;
+};
 
 const DEV_SECRET = "novaera-dev-secret-trocar-em-producao-0000";
 

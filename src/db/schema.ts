@@ -45,7 +45,7 @@ export const pages = pgTable("pages", {
   slug: text("slug").notNull().unique(),
   title: text("title").notNull(),
   blocks: jsonb("blocks").$type<Block[]>().notNull().default([]),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 /** Publicações (acervo do blog + novas). */
@@ -58,7 +58,7 @@ export const posts = pgTable("posts", {
   cover: text("cover").notNull().default(""),
   blocks: jsonb("blocks").$type<Block[]>().notNull().default([]),
   published: boolean("published").notNull().default(true),
-  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 /** Snapshot de cada salvamento — alimenta o botão "Desfazer". */
@@ -67,5 +67,14 @@ export const revisions = pgTable("revisions", {
   entity: text("entity").notNull(), // 'settings' | 'schedule' | 'people:board' | 'page:slug' | 'post:id' ...
   snapshot: jsonb("snapshot").notNull(),
   label: text("label").notNull().default(""),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  author: text("author").notNull().default(""),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/** Pessoas com acesso à área da diretoria (senha guardada como hash). */
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  passwordHash: text("password_hash").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
