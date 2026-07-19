@@ -18,7 +18,7 @@ export default async function Page() {
   return (
     <PageShell
       title="Fale Conosco"
-      image="/images/hero.jpg"
+      image="/images/amanhecer.jpg"
       intro="O Centro Espírita Nova Era é uma casa de apoio e esclarecimento físico e espiritual, sem fins lucrativos. Será um prazer receber você."
     >
       <div className="grid gap-5 sm:grid-cols-2">
