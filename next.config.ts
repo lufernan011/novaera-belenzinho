@@ -11,6 +11,14 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],
   },
+  experimental: {
+    // mantém as telas já visitadas no cache do navegador — navegar de volta
+    // não refaz a requisição (conteúdo muda pouco e é revalidado no servidor)
+    staleTimes: {
+      static: 300,
+      dynamic: 120,
+    },
+  },
 };
 
 export default nextConfig;
