@@ -63,12 +63,13 @@ export const posts = pgTable("posts", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-/** Snapshot de cada salvamento — alimenta o botão "Desfazer". */
+/** Snapshot de cada salvamento — alimenta o "Desfazer" e o histórico. */
 export const revisions = pgTable("revisions", {
   id: serial("id").primaryKey(),
   entity: text("entity").notNull(), // 'settings' | 'schedule' | 'people:board' | 'page:slug' | 'post:id' ...
   snapshot: jsonb("snapshot").notNull(),
   label: text("label").notNull().default(""),
+  action: text("action").notNull().default("Edição"), // 'Edição' | 'Criação' | 'Exclusão'
   author: text("author").notNull().default(""),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
@@ -79,4 +80,12 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
   passwordHash: text("password_hash").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/** Controle de tentativas de login por IP (persistente entre instâncias). */
+export const loginAttempts = pgTable("login_attempts", {
+  ip: text("ip").primaryKey(),
+  count: integer("count").notNull().default(0),
+  lockedUntil: timestamp("locked_until", { withTimezone: true }),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });

@@ -53,7 +53,9 @@ export default function LoginForm({
         id="pin"
         name="pin"
         type="password"
+        inputMode="numeric"
         autoComplete="current-password"
+        maxLength={6}
         required
         className="w-full rounded-xl border border-sand-300 bg-white px-4 py-3.5 text-center text-2xl tracking-[0.35em] text-ink-900 focus:border-coral-500"
       />

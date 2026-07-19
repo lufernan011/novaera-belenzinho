@@ -55,11 +55,14 @@ export default function AccessEditor({
           />
           <input
             type="text"
+            inputMode="numeric"
+            pattern="\d{6}"
+            maxLength={6}
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="Senha (mín. 4)"
-            className={`${inputCls} w-44`}
-            aria-label="Senha"
+            onChange={(e) => setNewPassword(e.target.value.replace(/\D/g, "").slice(0, 6))}
+            placeholder="Senha (6 números)"
+            className={`${inputCls} w-44 tracking-[0.3em]`}
+            aria-label="Senha de 6 números"
           />
           <button
             type="button"
@@ -160,10 +163,13 @@ function UserCard({
         <div className="mt-3 flex flex-wrap gap-2">
           <input
             type="text"
+            inputMode="numeric"
+            pattern="\d{6}"
+            maxLength={6}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Nova senha (mín. 4)"
-            className={`${inputCls} w-52`}
+            onChange={(e) => setPassword(e.target.value.replace(/\D/g, "").slice(0, 6))}
+            placeholder="Nova senha (6 números)"
+            className={`${inputCls} w-52 tracking-[0.3em]`}
             aria-label={`Nova senha de ${user.name}`}
           />
           <button

@@ -13,15 +13,58 @@ import { getSession, requireAdmin } from "@/lib/session";
 /* Login                                                               */
 /* ------------------------------------------------------------------ */
 
-// Proteção simples contra tentativa e erro (por instância)
-const attempts = new Map<string, { count: number; lockedUntil: number }>();
 const MAX_ATTEMPTS = 5;
-const LOCK_MS = 5 * 60 * 1000;
+const LOCK_MINUTES = 15;
 
 function safeEqual(a: string, b: string): boolean {
   const ba = Buffer.from(a.padEnd(64, "\0"));
   const bb = Buffer.from(b.padEnd(64, "\0"));
   return crypto.timingSafeEqual(ba, bb) && a.length === b.length;
+}
+
+/** Senha de acesso: exatamente 6 dígitos numéricos. */
+function isValidPin(pin: string): boolean {
+  return /^\d{6}$/.test(pin);
+}
+
+/* Rate limiting persistente (Postgres): sobrevive entre instâncias
+   serverless, ao contrário de um contador em memória. */
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function attemptRow(db: any, ip: string) {
+  const rows = await db
+    .select()
+    .from(schema.loginAttempts)
+    .where(eq(schema.loginAttempts.ip, ip));
+  return rows[0] as
+    | { ip: string; count: number; lockedUntil: Date | null }
+    | undefined;
+}
+
+async function isLocked(ip: string): Promise<boolean> {
+  const db = await getDb();
+  const row = await attemptRow(db, ip);
+  return !!row?.lockedUntil && row.lockedUntil.getTime() > Date.now();
+}
+
+async function recordFailure(ip: string): Promise<void> {
+  const db = await getDb();
+  const row = await attemptRow(db, ip);
+  const count = (row?.count ?? 0) + 1;
+  const lockedUntil =
+    count >= MAX_ATTEMPTS ? new Date(Date.now() + LOCK_MINUTES * 60_000) : null;
+  await db
+    .insert(schema.loginAttempts)
+    .values({ ip, count, lockedUntil, updatedAt: new Date() })
+    .onConflictDoUpdate({
+      target: schema.loginAttempts.ip,
+      set: { count, lockedUntil, updatedAt: new Date() },
+    });
+}
+
+async function clearAttempts(ip: string): Promise<void> {
+  const db = await getDb();
+  await db.delete(schema.loginAttempts).where(eq(schema.loginAttempts.ip, ip));
 }
 
 /** Hash de senha com scrypt (sem dependência externa). */
@@ -47,21 +90,14 @@ export async function login(
   const ip =
     (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
 
-  const entry = attempts.get(ip) ?? { count: 0, lockedUntil: 0 };
-  if (Date.now() < entry.lockedUntil) {
+  if (await isLocked(ip)) {
     return {
-      error:
-        "Muitas tentativas. Por segurança, aguarde 5 minutos e tente de novo.",
+      error: `Muitas tentativas. Por segurança, aguarde ${LOCK_MINUTES} minutos e tente de novo.`,
     };
   }
 
-  const fail = () => {
-    entry.count += 1;
-    if (entry.count >= MAX_ATTEMPTS) {
-      entry.lockedUntil = Date.now() + LOCK_MS;
-      entry.count = 0;
-    }
-    attempts.set(ip, entry);
+  const fail = async () => {
+    await recordFailure(ip);
     return { error: "Senha incorreta. Confira e tente novamente." };
   };
 
@@ -72,7 +108,7 @@ export async function login(
     // Senha mestre: primeiro acesso (sem usuários) ou recuperação
     const expected = process.env.ADMIN_PIN ?? "";
     if (!expected || !safeEqual(password, expected)) return fail();
-    userName = "Recuperação";
+    userName = "Senha mestre";
   } else {
     const db = await getDb();
     const rows = await db
@@ -85,7 +121,7 @@ export async function login(
     userName = user.name;
   }
 
-  attempts.delete(ip);
+  await clearAttempts(ip);
   const session = await getSession();
   session.isAdmin = true;
   session.userId = userId;
@@ -104,8 +140,8 @@ export async function createUser(
 ): Promise<SaveResult> {
   await requireAdmin();
   if (!name.trim()) return { ok: false, message: "Escreva o nome da pessoa." };
-  if (password.length < 4) {
-    return { ok: false, message: "A senha precisa ter pelo menos 4 caracteres." };
+  if (!isValidPin(password)) {
+    return { ok: false, message: "A senha precisa ter 6 números (ex.: 194712)." };
   }
   const db = await getDb();
   await db.insert(schema.users).values({
@@ -120,8 +156,8 @@ export async function changeUserPassword(
   password: string
 ): Promise<SaveResult> {
   await requireAdmin();
-  if (password.length < 4) {
-    return { ok: false, message: "A senha precisa ter pelo menos 4 caracteres." };
+  if (!isValidPin(password)) {
+    return { ok: false, message: "A senha precisa ter 6 números (ex.: 194712)." };
   }
   const db = await getDb();
   await db
@@ -148,13 +184,21 @@ export async function logout(): Promise<void> {
 /* Revisões (Desfazer)                                                 */
 /* ------------------------------------------------------------------ */
 
-async function saveRevision(entity: string, snapshot: unknown, label: string) {
+type RevAction = "Edição" | "Criação" | "Exclusão";
+
+async function saveRevision(
+  entity: string,
+  snapshot: unknown,
+  label: string,
+  action: RevAction = "Edição"
+) {
   const db = await getDb();
   const session = await getSession();
   await db.insert(schema.revisions).values({
     entity,
     snapshot,
     label,
+    action,
     author: session.userName ?? "",
   });
 }
@@ -247,7 +291,9 @@ export async function savePeople(
     .select()
     .from(schema.people)
     .where(eq(schema.people.kind, kind));
-  await saveRevision(`people:${kind}`, current, "Pessoas");
+  const peopleLabel =
+    kind === "board" ? "Diretoria" : kind === "president" ? "Presidentes" : "Trabalhadores";
+  await saveRevision(`people:${kind}`, current, peopleLabel);
   await db.delete(schema.people).where(eq(schema.people.kind, kind));
   if (items.length > 0) {
     await db
@@ -273,7 +319,7 @@ export async function savePageBlocks(
     .from(schema.pages)
     .where(eq(schema.pages.slug, slug));
   if (!current[0]) return { ok: false, message: "Página não encontrada." };
-  await saveRevision(`page:${slug}`, current[0], `Página ${slug}`);
+  await saveRevision(`page:${slug}`, current[0], `Página ${current[0].title}`);
   await db
     .update(schema.pages)
     .set({ blocks, updatedAt: new Date() })
@@ -316,6 +362,12 @@ export async function createPost(input: PostInput): Promise<SaveResult & { id?: 
     .insert(schema.posts)
     .values({ ...input, slug })
     .returning({ id: schema.posts.id });
+  await saveRevision(
+    `post:${inserted[0].id}`,
+    { __created: true },
+    `Publicação ${input.title.trim()}`,
+    "Criação"
+  );
   publish();
   return { ...OK, id: inserted[0].id };
 }
@@ -339,7 +391,7 @@ export async function deletePost(id: number): Promise<SaveResult> {
   const db = await getDb();
   const current = await db.select().from(schema.posts).where(eq(schema.posts.id, id));
   if (!current[0]) return { ok: false, message: "Publicação não encontrada." };
-  await saveRevision(`post:${id}`, current[0], `Publicação excluída ${current[0].title}`);
+  await saveRevision(`post:${id}`, current[0], `Publicação ${current[0].title}`, "Exclusão");
   await db.delete(schema.posts).where(eq(schema.posts.id, id));
   publish();
   return { ok: true, message: "Publicação removida do site." };
@@ -404,13 +456,19 @@ export async function undo(entity: string): Promise<SaveResult> {
       .set({ blocks: row.blocks, updatedAt: new Date() })
       .where(eq(schema.pages.slug, row.slug));
   } else if (entity.startsWith("post:")) {
-    const row = snap as typeof schema.posts.$inferSelect;
-    const existing = await db.select().from(schema.posts).where(eq(schema.posts.id, row.id));
-    const { id: _id, ...data } = row;
-    if (existing.length > 0) {
-      await db.update(schema.posts).set(data).where(eq(schema.posts.id, row.id));
+    const postId = Number(entity.split(":")[1]);
+    if (snap && (snap as { __created?: boolean }).__created) {
+      // desfazer uma criação = remover a publicação recém-criada
+      await db.delete(schema.posts).where(eq(schema.posts.id, postId));
     } else {
-      await db.insert(schema.posts).values(row);
+      const row = snap as typeof schema.posts.$inferSelect;
+      const existing = await db.select().from(schema.posts).where(eq(schema.posts.id, row.id));
+      const { id: _id, ...data } = row;
+      if (existing.length > 0) {
+        await db.update(schema.posts).set(data).where(eq(schema.posts.id, row.id));
+      } else {
+        await db.insert(schema.posts).values(row);
+      }
     }
   } else {
     return { ok: false, message: "Tipo de conteúdo desconhecido." };
