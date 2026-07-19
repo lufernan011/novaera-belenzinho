@@ -44,8 +44,9 @@ export default async function Page() {
             </a>
             <br />
             E-mail:{" "}
-            <a href={`mailto:${s.email}`} className="break-all text-coral-600 hover:underline">
-              {s.email}
+            <a href={`mailto:${s.email}`} className="text-coral-600 hover:underline">
+              {s.email.split("@")[0]}@<wbr />
+              {s.email.split("@")[1]}
             </a>
           </p>
           {s.whatsapp && (

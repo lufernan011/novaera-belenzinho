@@ -24,8 +24,9 @@ export default async function Footer() {
               {s.phone}
             </a>
             <br />
-            <a href={`mailto:${s.email}`} className="break-all hover:text-white">
-              {s.email}
+            <a href={`mailto:${s.email}`} className="hover:text-white">
+              {s.email.split("@")[0]}@<wbr />
+              {s.email.split("@")[1]}
             </a>
           </p>
         </div>
