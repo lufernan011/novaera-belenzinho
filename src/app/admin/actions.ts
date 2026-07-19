@@ -28,43 +28,56 @@ function isValidPin(pin: string): boolean {
 }
 
 /* Rate limiting persistente (Postgres): sobrevive entre instâncias
-   serverless, ao contrário de um contador em memória. */
+   serverless, ao contrário de um contador em memória.
+
+   A chave é IP + identidade (usuário ou "master"): bloquear as tentativas
+   de uma pessoa NÃO afeta as outras nem a senha mestre de recuperação,
+   mesmo que estejam no mesmo wifi. */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function attemptRow(db: any, ip: string) {
+async function attemptRow(db: any, key: string) {
   const rows = await db
     .select()
     .from(schema.loginAttempts)
-    .where(eq(schema.loginAttempts.ip, ip));
+    .where(eq(schema.loginAttempts.ip, key));
   return rows[0] as
-    | { ip: string; count: number; lockedUntil: Date | null }
+    | { ip: string; count: number; lockedUntil: Date | null; updatedAt: Date }
     | undefined;
 }
 
-async function isLocked(ip: string): Promise<boolean> {
+async function isLocked(key: string): Promise<boolean> {
   const db = await getDb();
-  const row = await attemptRow(db, ip);
+  const row = await attemptRow(db, key);
   return !!row?.lockedUntil && row.lockedUntil.getTime() > Date.now();
 }
 
-async function recordFailure(ip: string): Promise<void> {
+async function recordFailure(key: string): Promise<void> {
   const db = await getDb();
-  const row = await attemptRow(db, ip);
-  const count = (row?.count ?? 0) + 1;
+  const row = await attemptRow(db, key);
+  const now = Date.now();
+  const windowMs = LOCK_MINUTES * 60_000;
+  // recomeça a contagem se o bloqueio anterior já passou ou se a última
+  // tentativa foi há muito tempo — assim, após esperar, ganha 5 tentativas
+  // novas em vez de re-bloquear no primeiro erro
+  const fresh =
+    !row ||
+    (!!row.lockedUntil && row.lockedUntil.getTime() <= now) ||
+    now - row.updatedAt.getTime() > windowMs;
+  const count = (fresh ? 0 : row.count) + 1;
   const lockedUntil =
-    count >= MAX_ATTEMPTS ? new Date(Date.now() + LOCK_MINUTES * 60_000) : null;
+    count >= MAX_ATTEMPTS ? new Date(now + windowMs) : null;
   await db
     .insert(schema.loginAttempts)
-    .values({ ip, count, lockedUntil, updatedAt: new Date() })
+    .values({ ip: key, count, lockedUntil, updatedAt: new Date() })
     .onConflictDoUpdate({
       target: schema.loginAttempts.ip,
       set: { count, lockedUntil, updatedAt: new Date() },
     });
 }
 
-async function clearAttempts(ip: string): Promise<void> {
+async function clearAttempts(key: string): Promise<void> {
   const db = await getDb();
-  await db.delete(schema.loginAttempts).where(eq(schema.loginAttempts.ip, ip));
+  await db.delete(schema.loginAttempts).where(eq(schema.loginAttempts.ip, key));
 }
 
 /** Hash de senha com scrypt (sem dependência externa). */
@@ -90,14 +103,18 @@ export async function login(
   const ip =
     (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
 
-  if (await isLocked(ip)) {
+  // bloqueio por pessoa (não por wifi): trancar uma não tranca as outras
+  const identity = userIdRaw === "master" || userIdRaw === "" ? "master" : userIdRaw;
+  const key = `${ip}|${identity}`;
+
+  if (await isLocked(key)) {
     return {
       error: `Muitas tentativas. Por segurança, aguarde ${LOCK_MINUTES} minutos e tente de novo.`,
     };
   }
 
   const fail = async () => {
-    await recordFailure(ip);
+    await recordFailure(key);
     return { error: "Senha incorreta. Confira e tente novamente." };
   };
 
@@ -121,7 +138,7 @@ export async function login(
     userName = user.name;
   }
 
-  await clearAttempts(ip);
+  await clearAttempts(key);
   const session = await getSession();
   session.isAdmin = true;
   session.userId = userId;
