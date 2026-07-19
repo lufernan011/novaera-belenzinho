@@ -20,7 +20,7 @@ const SECTIONS = [
     href: "/trabalhos-realizados/",
     title: "Trabalhos realizados",
     text: "Assistência social, mediunidade, passes, estudos, costura e bazar.",
-    image: "/acervo/2017_12_fundadoras-assistencia-social.jpg",
+    image: "/acervo/2017_10_assistencia-social.jpg",
   },
   {
     href: "/presidentes/",
@@ -32,13 +32,13 @@ const SECTIONS = [
     href: "/diretoria/",
     title: "Diretoria",
     text: "O corpo diretivo atual da casa.",
-    image: "/acervo/2017_12_claudio-costa.jpg",
+    image: "/acervo/2017_10_reforma-concluida-1.jpg",
   },
   {
     href: "/trabalhadores/",
     title: "Trabalhadores",
     text: "Homenagem aos voluntários que fazem a casa acontecer.",
-    image: "/acervo/2017_11_ademir-sartori.jpg",
+    image: "/acervo/2017_10_2005-encontro-trabalhadores-1.jpg",
   },
 ];
 
