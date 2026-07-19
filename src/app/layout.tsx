@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Lora } from "next/font/google";
+import JsonLd from "@/components/JsonLd";
 import "./globals.css";
 
 const inter = Inter({
@@ -20,6 +21,12 @@ export const metadata: Metadata = {
   },
   description:
     "Casa de apoio e esclarecimento físico e espiritual, sem fins lucrativos, no Belenzinho, Zona Leste de São Paulo. Desde 1947.",
+  alternates: { canonical: "./" },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    siteName: "Centro Espírita Nova Era",
+  },
 };
 
 export default function RootLayout({
@@ -29,7 +36,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${inter.variable} ${lora.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <JsonLd />
+      </body>
     </html>
   );
 }

@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import { getSettings } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Fale Conosco" };
+export const metadata: Metadata = {
+  title: "Fale Conosco",
+  description:
+    "Endereço, telefone, e-mail e horário da secretaria do Centro Espírita Nova Era — Rua Martim Affonso, 78, Belenzinho, São Paulo.",
+};
 
 export default async function Page() {
   const s = await getSettings();

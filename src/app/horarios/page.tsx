@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import { DAY_NAMES, getSchedule, getSettings, todayInSaoPaulo } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Horários" };
+export const metadata: Metadata = {
+  title: "Horários",
+  description:
+    "Horários das atividades do Centro Espírita Nova Era no Belenzinho: passes, palestras e reuniões mediúnicas, presenciais e online, de segunda a sábado.",
+};
 
 export default async function Page() {
   const [schedule, settings] = await Promise.all([getSchedule(), getSettings()]);

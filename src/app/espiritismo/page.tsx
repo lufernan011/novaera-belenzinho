@@ -5,7 +5,11 @@ import PageShell from "@/components/PageShell";
 import Blocks from "@/components/Blocks";
 import { getPage } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Espiritismo" };
+export const metadata: Metadata = {
+  title: "Espiritismo",
+  description:
+    "O que é o Espiritismo, quem foi Allan Kardec e onde estudar a doutrina espírita. Conheça os fundamentos com o Centro Espírita Nova Era, no Belenzinho, São Paulo.",
+};
 
 /** Citação do banner clássico do site antigo — preservada como texto. */
 const KARDEC_QUOTE =

@@ -4,7 +4,10 @@ import Blocks from "@/components/Blocks";
 import WorkersMural from "@/components/WorkersMural";
 import { getPage, getPeople } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Trabalhadores" };
+export const metadata: Metadata = {
+  title: "Trabalhadores",
+  description: "Homenagem aos voluntários que mantêm vivos os trabalhos do Centro Espírita Nova Era.",
+};
 
 export default async function Page() {
   const [workers, page] = await Promise.all([

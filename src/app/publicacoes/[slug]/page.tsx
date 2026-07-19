@@ -17,7 +17,18 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);
-  return { title: post?.title ?? "Publicação" };
+  if (!post) return { title: "Publicação" };
+  const firstParagraph = post.blocks.find(
+    (b): b is Extract<typeof b, { text: string }> => b.type === "paragraph"
+  );
+  const description = firstParagraph
+    ? `${firstParagraph.text.slice(0, 152)}…`
+    : `${post.title} — Centro Espírita Nova Era, Belenzinho.`;
+  return {
+    title: post.title,
+    description,
+    openGraph: post.cover ? { images: [post.cover] } : undefined,
+  };
 }
 
 export default async function Page({
@@ -29,8 +40,23 @@ export default async function Page({
   const post = await getPost(slug);
   if (!post || !post.published) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    datePublished: post.date,
+    dateModified: post.updatedAt,
+    image: post.cover ? [`https://www.novaerabelenzinho.org.br${post.cover}`] : undefined,
+    author: { "@type": "Organization", name: "Centro Espírita Nova Era" },
+    publisher: { "@type": "Organization", name: "Centro Espírita Nova Era" },
+  };
+
   return (
     <PageShell title={post.title} image={post.cover || undefined}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <p className="-mt-4 mb-8 text-sm tracking-wider text-coral-700 uppercase">
         {post.category || "Publicação"} · {formatDate(post.date)}
       </p>

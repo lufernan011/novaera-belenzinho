@@ -4,7 +4,10 @@ import PersonAvatar from "@/components/PersonAvatar";
 import { getPeople } from "@/lib/content";
 import { BOARD_GROUPS, boardGroup } from "@/lib/people";
 
-export const metadata: Metadata = { title: "Diretoria" };
+export const metadata: Metadata = {
+  title: "Diretoria",
+  description: "O corpo diretivo atual do Centro Espírita Nova Era — Belenzinho, São Paulo.",
+};
 
 export default async function Page() {
   const board = await getPeople("board");

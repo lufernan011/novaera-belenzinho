@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import { getSettings } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Ajude o Nova Era" };
+export const metadata: Metadata = {
+  title: "Ajude o Nova Era",
+  description:
+    "Como ajudar o Centro Espírita Nova Era: doação de alimentos, bazar beneficente, contribuição mensal, trabalho voluntário e eventos.",
+};
 
 const WAYS = [
   {

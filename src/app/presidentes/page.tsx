@@ -3,7 +3,10 @@ import Image from "next/image";
 import PageShell from "@/components/PageShell";
 import { getPeople } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Presidentes" };
+export const metadata: Metadata = {
+  title: "Presidentes",
+  description: "As gestões que conduziram o Centro Espírita Nova Era desde a fundação, em 1947.",
+};
 
 export default async function Page() {
   const presidents = await getPeople("president");

@@ -6,7 +6,11 @@ import PageShell from "@/components/PageShell";
 import type { Block } from "@/db/schema";
 import { getPage } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Trabalhos Realizados" };
+export const metadata: Metadata = {
+  title: "Trabalhos Realizados",
+  description:
+    "Assistência social, evangelização infantil, estudos da doutrina, palestras, reuniões mediúnicas, psicografia, passes, costura e bazar — os trabalhos do Nova Era.",
+};
 
 function slugify(text: string): string {
   return text

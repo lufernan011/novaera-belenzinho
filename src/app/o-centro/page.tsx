@@ -3,7 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import PageShell from "@/components/PageShell";
 
-export const metadata: Metadata = { title: "O Centro" };
+export const metadata: Metadata = {
+  title: "O Centro",
+  description:
+    "Conheça o Centro Espírita Nova Era: história, trabalhos realizados, presidentes, diretoria e trabalhadores voluntários.",
+};
 
 const SECTIONS = [
   {

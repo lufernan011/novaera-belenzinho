@@ -4,7 +4,11 @@ import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import { formatDate, getPosts } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Publicações" };
+export const metadata: Metadata = {
+  title: "Publicações",
+  description:
+    "Palestras, seminários e registros das atividades do Centro Espírita Nova Era, no Belenzinho, São Paulo.",
+};
 
 export default async function Page() {
   const posts = await getPosts();

@@ -49,6 +49,7 @@ export default async function Home() {
             alt="Pôr do sol tranquilo sobre um lago"
             fill
             priority
+            sizes="100vw"
             className="object-cover object-[center_62%]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-petrol-900/50 via-petrol-900/15 to-petrol-900/85" />
